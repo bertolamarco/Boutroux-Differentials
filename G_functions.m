@@ -204,7 +204,7 @@ if Draw
     muld = ones(size(droot));
     muls = ones(size(sroot));
     mul=cat(2,muls*2,muld);
-    CriticalTrajectories_Rational(-1,ZZ,mul,...
+    CriticalTrajectories_Rational(-tR^2,ZZ,mul,...
         e,ones(size(e)),epsilon,Length);
     win = [min(real(cat(2,ZZ,e)))-2, max(real(cat(2,ZZ,e)))+2, min(imag(cat(2,ZZ,e)))-1, max(imag(cat(2,ZZ,e)))+1];
     plot(real(e),imag(e), 'r.','MarkerSize',24);
