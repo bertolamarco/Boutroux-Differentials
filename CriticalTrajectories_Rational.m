@@ -83,34 +83,35 @@ Length=L;
 
 
 tmp0=length(Zeros);
-tmp = ones(tmp0,1)*Zeros- Zeros.'*ones(1, tmp0);
-tmp=abs(tmp) + eye(tmp0);
-mindist= min(min(tmp));
-Colors= zeros(length(Zeros),3);
-for k=1:length(Zeros)
-    if rem(mu(k),2)==1 
-        Colors(k,:)=[1 0 0];
-    else
-        Colors(k,:)=[0 1 0];
-    end
-end
-while(mindist<2*epsilon)
-    [t1,t2]=min(tmp);
-    [~,tt2]=min(t1);
-    %Zeros(t2(tt2)) and Zeros(tt2) are closer than epsilon; we need to merge
-    Zeros(tt2)=[];
-    mu(t2(tt2)) = mu(t2(tt2))+mu(tt2);
-    if rem(mu(tt2),2)==1 || rem (mu(t2(tt2)),2)==1
-        Colors(t2(tt2),:)=[ 0 0 1];
-    end
-    Colors(tt2,:)=[];
-    mu(tt2)=[];
-    tmp0=tmp0-1;
-    tmp = ones(tmp0,1)*Zeros- Zeros.'*ones(1, tmp0) + eye(tmp0);
-    tmp=abs(tmp);
+if tmp0>0
+    tmp = ones(tmp0,1)*Zeros- Zeros.'*ones(1, tmp0);
+    tmp=abs(tmp) + eye(tmp0);
     mindist= min(min(tmp));
+    Colors= zeros(length(Zeros),3);
+    for k=1:length(Zeros)
+        if rem(mu(k),2)==1
+            Colors(k,:)=[1 0 0];
+        else
+            Colors(k,:)=[0 1 0];
+        end
+    end
+    while(mindist<2*epsilon)
+        [t1,t2]=min(tmp);
+        [~,tt2]=min(t1);
+        %Zeros(t2(tt2)) and Zeros(tt2) are closer than epsilon; we need to merge
+        Zeros(tt2)=[];
+        mu(t2(tt2)) = mu(t2(tt2))+mu(tt2);
+        if rem(mu(tt2),2)==1 || rem (mu(t2(tt2)),2)==1
+            Colors(t2(tt2),:)=[ 0 0 1];
+        end
+        Colors(tt2,:)=[];
+        mu(tt2)=[];
+        tmp0=tmp0-1;
+        tmp = ones(tmp0,1)*Zeros- Zeros.'*ones(1, tmp0) + eye(tmp0);
+        tmp=abs(tmp);
+        mindist= min(min(tmp));
+    end
 end
-
 %We should do the same with poles but it is a rare instance.. oh well
 SpecialPoints = cat(2,Zeros,Poles);
 ZZ= zeros(1,sum(mu));
